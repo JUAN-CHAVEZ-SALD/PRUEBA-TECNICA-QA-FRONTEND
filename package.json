@@ -16,7 +16,9 @@
   },
   "homepage": "https://github.com/JUAN-CHAVEZ-SALD/PRUEBA-TECNICA-QA-FRONTEND#readme",
   "devDependencies": {
+    "@cucumber/cucumber": "^12.3.0",
     "@playwright/test": "^1.57.0",
-    "@types/node": "^24.10.2"
+    "@types/node": "^24.10.2",
+    "ts-node": "^10.9.2"
   }
 }
