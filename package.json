@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Prueba Técnica QA Frontend",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "cucumber-js test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JUAN-CHAVEZ-SALD/PRUEBA-TECNICA-QA-FRONTEND.git"
