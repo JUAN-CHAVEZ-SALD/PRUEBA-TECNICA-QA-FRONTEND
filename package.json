@@ -1,0 +1,22 @@
+{
+  "name": "prueba-tecnica-qa-frontend",
+  "version": "1.0.0",
+  "description": "Prueba Técnica QA Frontend",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JUAN-CHAVEZ-SALD/PRUEBA-TECNICA-QA-FRONTEND.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JUAN-CHAVEZ-SALD/PRUEBA-TECNICA-QA-FRONTEND/issues"
+  },
+  "homepage": "https://github.com/JUAN-CHAVEZ-SALD/PRUEBA-TECNICA-QA-FRONTEND#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.2"
+  }
+}
