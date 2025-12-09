@@ -1,7 +1,6 @@
-import { Location, Locator, Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 import { TestContext } from "../utils/context/TestContext";
-import test from "node:test";
 
 export interface Producto {
   nombre: string;
@@ -14,7 +13,6 @@ export interface Producto {
 export class ProductsPage extends BasePage {
   protected readonly path: string = "/inventory.html";
 
-  private readonly productsTitle = this.page.locator(".title");
   private readonly inventoryContainer = this.page.locator(
     '[data-test="inventory-container"]'
   );
@@ -97,7 +95,6 @@ async removeProductsFromCart(
   for (const product of products) {
     console.log(`Intentando remover: ${product.nombre}`);
     const isVisible = await product.removeButton_ProductsPageLocator.isVisible();
-    console.log(`Botón Remove visible: ${isVisible}`);
     
     await this.click(product.removeButton_ProductsPageLocator, {
       state: "visible",
