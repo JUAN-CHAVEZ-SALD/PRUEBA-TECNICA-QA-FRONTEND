@@ -1,9 +1,9 @@
-import { IWorldOptions, setWorldConstructor, World } from "@cucumber/cucumber";
+import { IWorldOptions, setDefaultTimeout, setWorldConstructor, World } from "@cucumber/cucumber";
 import { Browser, BrowserContext, Page } from "@playwright/test";
 import { LoginPage } from "../../pages/LoginPage";
-import { ProductsPage } from "../../pages/ProductsPage";
+import { Producto, ProductsPage } from "../../pages/ProductsPage";
 import { CartPage } from "../../pages/CartPage";
-import { CheckoutPage } from "../../pages/CheckoutPage";
+import { CheckoutStepOnePage } from "../../pages/CheckoutStepOnePage";
 
 import "dotenv/config";
 import { SecretsAvailable } from "./types/SecretsAvailable";
@@ -18,11 +18,16 @@ export class TestContext extends World {
   context!: BrowserContext;
   page!: Page;
 
+  // Productos seleccionados en el escenario en curso
+  selectedProducts: Producto[] = [];
+  // Últimos productos removidos para validaciones
+  lastRemovedProducts: Producto[] = [];
+
   // Paginas utilizadas
   loginPage!: LoginPage;
   productsPage!: ProductsPage;
   cartPage!: CartPage;
-  checkoutPage!: CheckoutPage;
+  CheckoutStepOnePage!: CheckoutStepOnePage;
 
   constructor(options: IWorldOptions) {
     super(options);
@@ -62,7 +67,11 @@ export class TestContext extends World {
     this.loginPage = new LoginPage(this.page);
     this.productsPage = new ProductsPage(this.page);
     this.cartPage = new CartPage(this.page);
-    this.checkoutPage = new CheckoutPage(this.page);
+    this.CheckoutStepOnePage = new CheckoutStepOnePage(this.page);
+
+    // Resetear datos de escenario
+    this.selectedProducts = [];
+    this.lastRemovedProducts = [];
   }
 
   async cleanup(): Promise<void> {
@@ -84,3 +93,6 @@ export class TestContext extends World {
 
 // Registrar el TestContext como el World constructor
 setWorldConstructor(TestContext);
+
+// Establecer un timeout por defecto para los pasos de 10 segundos
+setDefaultTimeout(10 * 1000);
