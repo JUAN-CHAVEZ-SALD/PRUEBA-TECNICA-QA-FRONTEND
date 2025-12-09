@@ -1,6 +1,7 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 import { TestContext } from "../utils/context/TestContext";
+import extraerNumerosDeTexto from "../utils/functions/helpers/extraerNumerosDeTexto";
 
 export interface Producto {
   nombre: string;
@@ -54,8 +55,10 @@ export class ProductsPage extends BasePage {
         const descripcion = await this.inventoryItemDescription(
           item
         ).textContent();
-        const precioTexto = await this.inventoryItemPrice(item).textContent();
-        const precio = parseFloat(precioTexto.replace("$", ""));
+
+        const precio = extraerNumerosDeTexto(
+          await this.inventoryItemPrice(item).textContent()
+        );
 
         const addToCartButtonLocator = this.addToCartButton(item);
 
@@ -86,25 +89,23 @@ export class ProductsPage extends BasePage {
     }
   }
 
-async removeProductsFromCart(
-  products: Producto[],
-  testContext: TestContext
-): Promise<void> {
-  testContext.lastRemovedProducts = [];
+  async removeProductsFromCart(
+    products: Producto[],
+    testContext: TestContext
+  ): Promise<void> {
+    testContext.lastRemovedProducts = [];
 
-  for (const product of products) {
-    console.log(`Intentando remover: ${product.nombre}`);
-    const isVisible = await product.removeButton_ProductsPageLocator.isVisible();
-    
-    await this.click(product.removeButton_ProductsPageLocator, {
-      state: "visible",
-    });
-    testContext.selectedProducts = testContext.selectedProducts.filter(
-      (p) => p.nombre !== product.nombre
-    );
-    testContext.lastRemovedProducts.push(product);
+    for (const product of products) {
+      
+      await this.click(product.removeButton_ProductsPageLocator, {
+        state: "visible",
+      });
+      testContext.selectedProducts = testContext.selectedProducts.filter(
+        (p) => p.nombre !== product.nombre
+      );
+      testContext.lastRemovedProducts.push(product);
+    }
   }
-}
   async getCartBadgeCount(): Promise<number | null> {
     if (await this.shoppingCartBadge.isVisible()) {
       return Number(await this.shoppingCartBadge.textContent());
@@ -119,5 +120,4 @@ async removeProductsFromCart(
   async clickCartIcon(): Promise<void> {
     await this.click(this.shoppingCartLink, { state: "visible" });
   }
-  
 }

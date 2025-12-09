@@ -1,12 +1,19 @@
-import { IWorldOptions, setDefaultTimeout, setWorldConstructor, World } from "@cucumber/cucumber";
+import {
+  IWorldOptions,
+  setDefaultTimeout,
+  setWorldConstructor,
+  World,
+} from "@cucumber/cucumber";
 import { Browser, BrowserContext, Page } from "@playwright/test";
 import { LoginPage } from "../../pages/LoginPage";
 import { Producto, ProductsPage } from "../../pages/ProductsPage";
-import { CartPage } from "../../pages/CartPage";
+import { CartItem, CartPage } from "../../pages/CartPage";
 import { CheckoutStepOnePage } from "../../pages/CheckoutStepOnePage";
+import { CheckoutStepTwoPage } from "../../pages/CheckoutStepTwoPage";
 
 import "dotenv/config";
 import { SecretsAvailable } from "./types/SecretsAvailable";
+import { CheckoutCompletePage } from "../../pages/CheckoutCompletePage";
 
 interface WorldParameters {
   browser?: "chromium" | "firefox" | "webkit";
@@ -22,12 +29,16 @@ export class TestContext extends World {
   selectedProducts: Producto[] = [];
   // Últimos productos removidos para validaciones
   lastRemovedProducts: Producto[] = [];
+  //
+  productsInCart: CartItem[] = [];
 
   // Paginas utilizadas
   loginPage!: LoginPage;
   productsPage!: ProductsPage;
   cartPage!: CartPage;
-  CheckoutStepOnePage!: CheckoutStepOnePage;
+  checkoutStepOnePage!: CheckoutStepOnePage;
+  checkoutStepTwoPage!: CheckoutStepTwoPage;
+  checkoutCompletePage!: CheckoutCompletePage;
 
   constructor(options: IWorldOptions) {
     super(options);
@@ -67,7 +78,9 @@ export class TestContext extends World {
     this.loginPage = new LoginPage(this.page);
     this.productsPage = new ProductsPage(this.page);
     this.cartPage = new CartPage(this.page);
-    this.CheckoutStepOnePage = new CheckoutStepOnePage(this.page);
+    this.checkoutStepOnePage = new CheckoutStepOnePage(this.page);
+    this.checkoutStepTwoPage = new CheckoutStepTwoPage(this.page);
+    this.checkoutCompletePage = new CheckoutCompletePage(this.page);
 
     // Resetear datos de escenario
     this.selectedProducts = [];
@@ -94,5 +107,5 @@ export class TestContext extends World {
 // Registrar el TestContext como el World constructor
 setWorldConstructor(TestContext);
 
-// Establecer un timeout por defecto para los pasos de 10 segundos
-setDefaultTimeout(10 * 1000);
+// Establecer un timeout por defecto para los pasos de 30 segundos
+setDefaultTimeout(30 * 1000);

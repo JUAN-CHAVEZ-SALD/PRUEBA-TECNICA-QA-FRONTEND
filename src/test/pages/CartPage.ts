@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import extraerNumerosDeTexto from "../utils/functions/helpers/extraerNumerosDeTexto";
 
 export interface CartItem {
   nombre: string;
@@ -72,12 +73,9 @@ export class CartPage extends BasePage {
           (await this.cartItemQuantity(cartItemLocator).textContent())?.trim()
         );
 
-        const precioTexto = (
+        const precio = extraerNumerosDeTexto(
           await this.cartItemPrice(cartItemLocator).textContent()
-        )
-          ?.trim()
-          .toString();
-        const precio = parseFloat(precioTexto.replace("$", ""));
+        );
 
         const removeButton_CartPageLocator = this.cartItemRemoveButton(nombre);
 
@@ -113,5 +111,4 @@ export class CartPage extends BasePage {
   async clickCheckout(): Promise<void> {
     await this.click(this.checkoutButton, { state: "visible" });
   }
-
 }
